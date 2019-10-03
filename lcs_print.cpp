@@ -1,6 +1,6 @@
 // https://www.hackerrank.com/challenges/dynamic-programming-classics-the-longest-common-subsequence/problem
 
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
 
 stack <int> values;
