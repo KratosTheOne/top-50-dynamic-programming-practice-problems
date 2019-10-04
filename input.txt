@@ -1,3 +1,5 @@
-1
-abcabc
-abc
+2
+acbd
+acbd
+vnvn
+vn

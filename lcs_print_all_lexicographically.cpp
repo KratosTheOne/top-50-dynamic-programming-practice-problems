@@ -1,62 +1,73 @@
 // https://www.spoj.com/problems/TRIP/
 
-#include<bits/stdc++.h>
-using namespace std;
+#include<bits/stdc++.h> 
+#define MAX 100 
 
-int lcs[101][101];
+using namespace std; 
+
+int lcslen = 0; 
+int dp[MAX][MAX]; 
 string x, y;
-int n, m;
-int ans_len;
-string pos = "";
-set <string> pr;
+int m, n;
 
-void printLcs(string &ans, int row, int col, int currlen)
+int lcs(int i, int j) 
 {
-	if(row > n or col > m)
-		return;
 
-	int flag = 0;
+	if (i == m || j == n) 
+		return dp[i][j] = 0; 
+
+	if (dp[i][j] != -1) 
+		return dp[i][j]; 
+
+	dp[i][j] = 0; 
+
+	if (x[i] == y[j]) 
+		dp[i][j] = 1 + lcs(i+1, j+1); 
+	else
+		dp[i][j] = max(lcs(i+1, j), lcs(i, j+1)); 
 	
-	for(int ch = 0; ch < 26; ch++)
-	{
-		for(int i = row; i <= n; i++)
-		{
-			
-			if(x[i-1] == (char)('a' + ch))
-			{
-				for(int j = col; j <= m; j++)
-				{
-					if(y[j-1] == (char)('a' + ch) && lcs[i][j] == currlen)
-					{
-						ans = ans + x[i-1];
-						pos = pos + to_string(i-1);
-						pr.insert(ans);
-						if(currlen == ans_len)
-						{
-							cout << ans << endl;
-							cout << pos << endl;
-							pos.erase(pos.length()-1);
-							ans.erase(ans.length()-1);
-							flag = 1;
-							break;
-						}
-						else
-						{
-							printLcs(ans, i + 1, j + 1, currlen + 1);	
-						}
-						pos.erase(pos.length()-1);
-						ans.erase(ans.length()-1);
-					}
-				}
-				if(flag)
-					break;
-			}
-			
-		}	
-	}
+	return dp[i][j]; 
 }
 
-int main()
+void printAll(string &data, int indx1, int indx2, int currlcs) 
+{
+	if (currlcs == lcslen) 
+	{
+		cout << data << endl;
+		return; 
+	} 
+
+	if (indx1 == m || indx2 == n) 
+		return; 
+ 
+	for (char ch = 'a'; ch <= 'z'; ch++) 
+	{
+		bool done = false; 
+		for (int i = indx1; i < m; i++) 
+		{ 
+			if (ch == x[i]) 
+			{ 
+				for (int j = indx2; j < n; j++) 
+				{
+					if (ch == y[j] && lcs(i, j) == lcslen - currlcs) 
+					{ 
+						data.push_back(ch);
+						printAll(data, i+1, j+1, currlcs+1); 
+						done = true;
+						data.erase(data.length() - 1);
+						break; 
+					} 
+				} 
+			} 
+			if(done) 
+			{
+				break; 
+			}
+		} 
+	} 
+}
+
+int main() 
 {
 	#ifndef ONLINE_JUDGE
 	freopen("input.txt", "r", stdin);
@@ -67,31 +78,16 @@ int main()
 	cin >> t;
 	while(t--)
 	{
-		memset(lcs, 0, sizeof(lcs));
-
 		cin >> x >> y;
 
-		n = x.size();
-		m = y.size();
+		m = x.size();
+		n = y.size();
 
-		for(int i = 1; i <= n; i++)
-		{
-			for(int j = 1; j <= m; j++)
-			{
-				if(x[i-1] == y[j-1])
-					lcs[i][j] = lcs[i-1][j-1] + 1;
-				else
-					lcs[i][j] = max(lcs[i-1][j], lcs[i][j-1]);
-			}
-		}
-		
-		ans_len =  lcs[n][m];
+		memset(dp, -1, sizeof(dp)); 
+    	lcslen = lcs(0, 0); 
 
-		cout << ans_len << endl;
-
-		string ans = "";
-		printLcs(ans, 1, 1, 1);
-		cout << "END" << endl;
+		string data = "";
+		printAll(data, 0, 0, 0);
 	}
-	return 0;
-}
+	return 0; 
+} 
