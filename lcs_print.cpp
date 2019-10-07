@@ -1,4 +1,4 @@
-// https://www.hackerrank.com/challenges/dynamic-programming-classics-the-longest-common-subsequence/problem
+// https://www.geeksforgeeks.org/longest-palindromic-subsequence-dp-12/
 
 #include <bits/stdc++.h>
 using namespace std;
