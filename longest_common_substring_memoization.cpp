@@ -1,4 +1,4 @@
-// // https://www.geeksforgeeks.org/longest-common-substring-dp-29/
+// https://www.geeksforgeeks.org/longest-common-substring-dp-29/
 
 #include<bits/stdc++.h>
 using namespace std;
@@ -15,21 +15,28 @@ int dp(int i, int j)
 
 	if(LCS[i][j] != -1)
 		return LCS[i][j];
-    
     dp(i-1, j);
     dp(i, j-1);
-    	
-	if(x[i-1] == y[j-1])
+    if(x[i-1] == y[j-1])
 	{
 		LCS[i][j] = dp(i-1, j-1) + 1;
 		ans = max(ans, LCS[i][j]);
 		return LCS[i][j];
 	}
-    return LCS[i][j] = 0;
+	else
+	{
+	    LCS[i][j] = 0;
+	}
+    return LCS[i][j];
 }
 
 int main()
 {
+	#ifndef ONLINE_JUDGE
+	freopen("input.txt", "r", stdin);
+	freopen("output.txt", "w", stdout);
+	#endif
+
 	int t;
 	cin >> t;
 	while(t--)
