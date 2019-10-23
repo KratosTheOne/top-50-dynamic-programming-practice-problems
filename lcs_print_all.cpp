@@ -35,7 +35,7 @@ set <string> print(int p, int q)
 		
 		ans.insert(temp2.begin(), temp2.end());
 	}
-	
+
 	return ans;
 }
 
